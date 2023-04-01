@@ -15,17 +15,20 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.navigation.NavController
 import com.example.mobilki.domain.models.auth.AuthScreenPages
 import com.example.mobilki.presentation.dim.Dimens
-import com.example.mobilki.presentation.screens.auth_screen.screens.LoginScreen
-import com.example.mobilki.presentation.screens.auth_screen.screens.RegistrationScreen
+import com.example.mobilki.presentation.screens.auth_screen.login.LoginScreen
+import com.example.mobilki.presentation.screens.auth_screen.registration.RegistrationScreen
 import com.example.mobilki.ui.theme.Purple700
 import com.example.mobilki.ui.theme.typography
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun AuthPagerScreen() {
+fun AuthPagerScreen(
+    navController: NavController
+) {
     Column(
         verticalArrangement = Arrangement.spacedBy(Dimens.Paddings.basePadding),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -44,7 +47,7 @@ fun AuthPagerScreen() {
         ) {
             when (pages[it]) {
                 AuthScreenPages.REGISTRATION -> RegistrationScreen()
-                AuthScreenPages.LOGIN -> LoginScreen()
+                AuthScreenPages.LOGIN -> LoginScreen(navController)
             }
         }
     }

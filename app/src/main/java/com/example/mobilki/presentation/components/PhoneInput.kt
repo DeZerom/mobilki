@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.constraintlayout.compose.ConstraintLayout
@@ -15,15 +14,17 @@ import com.example.mobilki.presentation.dim.Dimens
 
 @Composable
 fun PhoneInput(
-    phoneCodeState: MutableState<String>,
-    phoneNumberState: MutableState<String>
+    phoneCode: String,
+    onPhoneCodeChanged: (String) -> Unit,
+    phoneNumber: String,
+    onPhoneNumberChanged: (String) -> Unit
 ) {
     ConstraintLayout(modifier = Modifier.fillMaxWidth()) {
         val (codeEt, numberEt) = createRefs()
 
         TextField(
-            value = phoneCodeState.value,
-            onValueChange = { phoneCodeState.value = it },
+            value = phoneCode,
+            onValueChange = onPhoneCodeChanged,
             placeholder = { Text(text = stringResource(R.string.plus_seven)) },
             modifier = Modifier
                 .constrainAs(codeEt) {
@@ -34,8 +35,8 @@ fun PhoneInput(
         )
 
         TextField(
-            value = phoneNumberState.value,
-            onValueChange = { phoneNumberState.value = it },
+            value = phoneNumber,
+            onValueChange = onPhoneNumberChanged,
             placeholder = { Text(text = stringResource(R.string.phone_placeholder)) },
             modifier = Modifier
                 .constrainAs(numberEt) {

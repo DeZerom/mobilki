@@ -15,13 +15,14 @@ import com.example.mobilki.R
 
 @Composable
 fun PasswordInput(
-    passState: MutableState<String>,
+    password: String,
+    onPasswordChanged: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     var isPassVisible by remember { mutableStateOf(false) }
     TextField(
-        value = passState.value,
-        onValueChange = { passState.value = it },
+        value = password,
+        onValueChange = onPasswordChanged,
         placeholder = { Text(text = stringResource(R.string.password)) },
         visualTransformation = if (isPassVisible)
             VisualTransformation.None
