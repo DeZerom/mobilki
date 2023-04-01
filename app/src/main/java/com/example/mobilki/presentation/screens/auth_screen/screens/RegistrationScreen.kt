@@ -1,10 +1,7 @@
 package com.example.mobilki.presentation.screens.auth_screen.screens
 
 import android.widget.Toast
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
@@ -29,7 +26,7 @@ fun RegistrationScreen() {
 
     Column(
         verticalArrangement = Arrangement.spacedBy(Dimens.Paddings.basePadding),
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier.fillMaxSize()
     ) {
         PhoneInput(phoneCodeState = code, phoneNumberState = number)
 

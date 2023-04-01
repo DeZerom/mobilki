@@ -26,7 +26,7 @@ fun LoginScreen() {
     Column(
         verticalArrangement = Arrangement.spacedBy(Dimens.Paddings.basePadding),
         modifier = Modifier
-            .fillMaxWidth()
+            .fillMaxSize()
             .padding(horizontal = Dimens.Paddings.basePadding)
     ) {
         PhoneInput(phoneCodeState = code, phoneNumberState = number)
