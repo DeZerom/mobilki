@@ -12,7 +12,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.lifecycle.ViewModelStoreOwner
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.mobilki.R
 import com.example.mobilki.presentation.base.BaseScreen
@@ -22,9 +24,11 @@ import com.example.mobilki.presentation.dim.Dimens
 import com.example.mobilki.ui.theme.typography
 
 @Composable
-fun RegistrationScreen() {
-    val viewModel: RegistrationScreenViewModel = viewModel()
-
+fun RegistrationScreen(
+    viewModel: RegistrationScreenViewModel = viewModel(
+        viewModelStoreOwner = LocalContext.current as ViewModelStoreOwner
+    )
+) {
     BaseScreen(baseViewModel = viewModel)
 
     val state by viewModel.state.collectAsState()

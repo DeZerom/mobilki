@@ -8,7 +8,9 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.lifecycle.ViewModelStoreOwner
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.mobilki.R
@@ -19,8 +21,12 @@ import com.example.mobilki.presentation.dim.Dimens
 import com.example.mobilki.ui.theme.typography
 
 @Composable
-fun LoginScreen(navController: NavController) {
-    val viewModel: LoginScreenViewModel = viewModel()
+fun LoginScreen(
+    navController: NavController,
+    viewModel: LoginScreenViewModel = viewModel(
+        viewModelStoreOwner = LocalContext.current as ViewModelStoreOwner
+    )
+) {
     val state by viewModel.state.collectAsState()
 
     BaseScreen(baseViewModel = viewModel)
