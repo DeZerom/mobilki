@@ -8,10 +8,8 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.lifecycle.ViewModelStoreOwner
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.mobilki.R
 import com.example.mobilki.presentation.base.BaseScreen
@@ -23,9 +21,7 @@ import com.example.mobilki.ui.theme.typography
 @Composable
 fun LoginScreen(
     navController: NavController,
-    viewModel: LoginScreenViewModel = viewModel(
-        viewModelStoreOwner = LocalContext.current as ViewModelStoreOwner
-    )
+    viewModel: LoginScreenViewModel = hiltViewModel()
 ) {
     val state by viewModel.state.collectAsState()
 
@@ -33,7 +29,7 @@ fun LoginScreen(
 
     LaunchedEffect(key1 = state.successful) {
         if (state.successful) {
-            navController.navigate("auth/${state.userId}")
+            navController.navigate("greetings/${state.userId}")
         }
     }
 

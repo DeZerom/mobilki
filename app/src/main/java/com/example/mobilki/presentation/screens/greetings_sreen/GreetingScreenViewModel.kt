@@ -17,9 +17,9 @@ class GreetingScreenViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle
 ): BaseViewModel() {
 
-    private val userId: Int = savedStateHandle["userId"] ?: 0
+    private val userId: Int = savedStateHandle["id"] ?: 0
 
-    private val _state = MutableStateFlow(GreetingsScreenState())
+    private val _state = MutableStateFlow(GreetingsScreenState(null))
     val state = _state.asStateFlow()
 
     init {
@@ -28,11 +28,28 @@ class GreetingScreenViewModel @Inject constructor(
         }
     }
 
+    fun changeUserData() = viewModelScope.launch {
+        state.value.user?.let { userRepository.updateUserData(it) }
+        _state.value = state.value.copy(user = userRepository.getUserById(userId))
+    }
+
+    fun onNameChanged(newName: String) {
+        _state.value = state.value.copy(
+            user = state.value.user?.copy(name = newName)
+        )
+    }
+
+    fun onPassChanged(newPass: String) {
+        _state.value = state.value.copy(
+            user = state.value.user?.copy(pass = newPass)
+        )
+    }
+
     private suspend fun getUser() {
         val user = userRepository.getUserById(userId)
 
         if (user != null) {
-            _state.value = state.value.copy(name = user.name)
+            _state.value = state.value.copy(user = user)
         } else {
             setToastText(R.string.something_went_wrong)
         }

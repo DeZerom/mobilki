@@ -10,6 +10,10 @@ class UserRepository @Inject constructor(
     private val sharedPreferences: SharedPreferences
 ) {
 
+    suspend fun updateUserData(user: UserModel) {
+        return userDao.updateUser(user = user)
+    }
+
     suspend fun getUserById(id: Int): UserModel? {
         return userDao.getById(id)
     }

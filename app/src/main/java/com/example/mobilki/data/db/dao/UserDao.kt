@@ -3,6 +3,7 @@ package com.example.mobilki.data.db.dao
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
+import androidx.room.Update
 import com.example.mobilki.data.models.UserModel
 
 @Dao
@@ -16,5 +17,8 @@ interface UserDao {
 
     @Query("SELECT * FROM Users WHERE id = :id LIMIT 1")
     suspend fun getById(id: Int): UserModel?
+
+    @Update
+    suspend fun updateUser(user: UserModel)
 
 }

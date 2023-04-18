@@ -24,5 +24,6 @@
     <string name="something_went_wrong">Что-то пошло не так</string>
 
     <!-- greetings scr -->
-    <string name="hello_smb">Привет, %s</string>
+    <string name="phone_numb">Номер телефона +%1s %2s</string>
+    <string name="change">Изменить</string>
 </resources>
