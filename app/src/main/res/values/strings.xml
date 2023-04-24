@@ -11,4 +11,19 @@
     <string name="logIn">Войти</string>
     <string name="forgotPassword">Забыли пароль?</string>
     <string name="rememberMe">Запомнить меня</string>
+
+    <!--reg -->
+    <string name="all_fields_must_be_filled">Все поля должны быть заполнены</string>
+    <string name="password_must_match">Пароли должны совпадать</string>
+    <string name="successful_registration">Регистрация успешна</string>
+
+    <!-- login -->
+    <string name="wrong_credentials">Неверный логин/пароль</string>
+
+    <!-- err -->
+    <string name="something_went_wrong">Что-то пошло не так</string>
+
+    <!-- greetings scr -->
+    <string name="phone_numb">Номер телефона +%1s %2s</string>
+    <string name="change">Изменить</string>
 </resources>

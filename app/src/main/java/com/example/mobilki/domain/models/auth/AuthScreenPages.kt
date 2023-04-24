@@ -4,7 +4,7 @@ import androidx.annotation.StringRes
 import com.example.mobilki.R
 
 enum class AuthScreenPages {
-    REGISTRATION, LOGIN;
+    LOGIN, REGISTRATION;
 
     @StringRes
     fun toStringRes() = when (this) {
