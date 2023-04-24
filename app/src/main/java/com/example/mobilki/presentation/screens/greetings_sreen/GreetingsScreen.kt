@@ -8,25 +8,36 @@ import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.example.mobilki.R
 import com.example.mobilki.presentation.base.BaseScreen
 import com.example.mobilki.presentation.components.PasswordInput
 import com.example.mobilki.presentation.dim.Dimens
+import com.example.mobilki.presentation.nav.NavRoutes
 import com.example.mobilki.ui.theme.typography
 
 @Composable
 fun GreetingsScreen(
+    navController: NavController,
     viewModel: GreetingScreenViewModel = hiltViewModel()
 ) {
     val state by viewModel.state.collectAsState()
 
     BaseScreen(baseViewModel = viewModel)
+
+    LaunchedEffect(key1 = state.isLoggedOut) {
+        navController.popBackStack(
+            route = NavRoutes.AUTH_PAGER.rawRoute(),
+            inclusive = false
+        )
+    }
 
     Column(
         verticalArrangement = Arrangement.spacedBy(Dimens.Paddings.basePadding),
@@ -39,6 +50,16 @@ fun GreetingsScreen(
                 text = stringResource(
                     id = R.string.phone_numb,
                     formatArgs = arrayOf(user.phoneCode, user.phoneNumber)
+                ),
+                style = typography.h2
+            )
+
+            Text(
+                text = stringResource(
+                    id = if (user.isAdmin)
+                        R.string.admin
+                    else
+                        R.string.user
                 ),
                 style = typography.h2
             )

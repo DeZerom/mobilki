@@ -12,6 +12,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.example.mobilki.presentation.nav.NavRoutes
 import com.example.mobilki.presentation.screens.auth_screen.AuthPagerScreen
 import com.example.mobilki.presentation.screens.greetings_sreen.GreetingsScreen
 import com.example.mobilki.ui.theme.MobilkiTheme
@@ -29,12 +30,18 @@ class MainActivity : ComponentActivity() {
                 ) {
                     val navController = rememberNavController()
 
-                    NavHost(navController = navController, startDestination = "auth") {
-                        composable("auth") { AuthPagerScreen(navController) }
+                    NavHost(
+                        navController = navController,
+                        startDestination = NavRoutes.AUTH_PAGER.rawRoute()) {
+                        composable(NavRoutes.AUTH_PAGER.rawRoute()) {
+                            AuthPagerScreen(navController)
+                        }
                         composable(
-                            route = "greetings/{id}",
-                            arguments = listOf(navArgument("id") { type = NavType.IntType })
-                        ) { GreetingsScreen() }
+                            route = NavRoutes.GREETINGS.rawRoute(),
+                            arguments = listOf(
+                                navArgument(NavRoutes.GREETINGS.argName) { type = NavType.IntType }
+                            )
+                        ) { GreetingsScreen(navController) }
                     }
                 }
             }

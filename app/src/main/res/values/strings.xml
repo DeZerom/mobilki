@@ -26,4 +26,6 @@
     <!-- greetings scr -->
     <string name="phone_numb">Номер телефона +%1s %2s</string>
     <string name="change">Изменить</string>
+    <string name="admin">Админ</string>
+    <string name="user">Пользователь</string>
 </resources>

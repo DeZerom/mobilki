@@ -12,5 +12,6 @@ data class UserModel(
     val phoneCode: String,
     val phoneNumber: String,
     val name: String,
-    val pass: String
+    val pass: String,
+    val isAdmin: Boolean
 )

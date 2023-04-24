@@ -19,7 +19,7 @@ class LoginScreenViewModel @Inject constructor(
     val state = _state.asStateFlow()
 
     init {
-        tryRestoreCredentials()
+        viewModelScope.launch { tryRestoreCredentials() }
     }
 
     fun onCodeChange(newCode: String) {
@@ -51,11 +51,15 @@ class LoginScreenViewModel @Inject constructor(
             }
 
             _state.value = LoginScreenState()
-            navigateToSomeScreen(result)
+            navigateToGreetingsScreen(result)
         } else {
             _state.value = state.copy(isLoading = false)
             setToastText(R.string.wrong_credentials)
         }
+    }
+
+    fun navigatedToGreetingsScreen() {
+        _state.value = state.value.copy(successful = false)
     }
 
     private fun rememberUser(state: LoginScreenState) {
@@ -66,17 +70,21 @@ class LoginScreenViewModel @Inject constructor(
         )
     }
 
-    private fun tryRestoreCredentials() {
+    private suspend fun tryRestoreCredentials() {
         val userModel = userRepository.restoreCredentials()
 
-        _state.value = state.value.copy(
-            code = userModel.phoneCode,
-            phone = userModel.phoneNumber,
-            pass = userModel.pass
-        )
+        val newsState = if (userModel == null) {
+            LoginScreenState()
+        } else {
+            state.value.copy(
+                successful = true
+            )
+        }
+
+        _state.value = newsState
     }
 
-    private fun navigateToSomeScreen(userId: Int) {
+    private fun navigateToGreetingsScreen(userId: Int) {
         _state.value = state.value.copy(successful = true, userId = userId)
     }
 }

@@ -37,12 +37,21 @@ class GreetingScreenViewModel @Inject constructor(
         _state.value = state.value.copy(
             user = state.value.user?.copy(name = newName)
         )
+
+        logout()
     }
 
     fun onPassChanged(newPass: String) {
         _state.value = state.value.copy(
             user = state.value.user?.copy(pass = newPass)
         )
+
+        logout()
+    }
+
+    private fun logout() {
+        userRepository.forgotUser()
+        _state.value = state.value.copy(isLoggedOut = true)
     }
 
     private suspend fun getUser() {

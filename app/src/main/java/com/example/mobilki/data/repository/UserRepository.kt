@@ -31,27 +31,35 @@ class UserRepository @Inject constructor(
             .putString(CODE_KEY, code)
             .putString(NUMBER_KEY, phone)
             .putString(PASS_KEY, pass)
+            .putLong(TIME_KEY, System.currentTimeMillis())
             .apply()
     }
 
-    fun restoreCredentials(): UserModel {
-        val code = sharedPreferences.getString(CODE_KEY, "")
-        val number = sharedPreferences.getString(NUMBER_KEY, "")
-        val pass = sharedPreferences.getString(PASS_KEY, "")
+    fun forgotUser() {
+        sharedPreferences.edit()
+            .clear()
+            .apply()
+    }
 
-        return UserModel(
-            id = 0,
-            phoneCode = code!!,
-            phoneNumber = number!!,
-            pass = pass!!,
-            name = ""
-        )
+    suspend fun restoreCredentials(): UserModel? {
+        val code = sharedPreferences.getString(CODE_KEY, "") ?: return null
+        val number = sharedPreferences.getString(NUMBER_KEY, "") ?: return null
+        val pass = sharedPreferences.getString(PASS_KEY, "") ?: return null
+
+        val writeTime = sharedPreferences.getLong(TIME_KEY, 0)
+
+        if (writeTime + EXPIRE_TIME <= System.currentTimeMillis()) return null
+
+        return userDao.getUserByPhoneAndPass(code, number, pass)
     }
 
     companion object {
         private const val CODE_KEY = "code"
         private const val NUMBER_KEY = "number"
         private const val PASS_KEY = "pass"
+        private const val TIME_KEY = "time"
+        private const val MILLIS_IN_MINUTE = 1000 * 60
+        private const val EXPIRE_TIME = 2 * MILLIS_IN_MINUTE
     }
 
 }

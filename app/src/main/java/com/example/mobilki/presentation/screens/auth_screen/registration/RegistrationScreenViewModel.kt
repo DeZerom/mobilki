@@ -50,7 +50,8 @@ class RegistrationScreenViewModel @Inject constructor(
                     phoneCode = state.code,
                     phoneNumber = state.number,
                     name = state.name,
-                    pass = state.pass
+                    pass = state.pass,
+                    isAdmin = false
                 )
             )
 

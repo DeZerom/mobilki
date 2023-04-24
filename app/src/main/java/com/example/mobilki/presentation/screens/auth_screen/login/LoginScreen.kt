@@ -1,10 +1,21 @@
 package com.example.mobilki.presentation.screens.auth_screen.login
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Button
 import androidx.compose.material.Checkbox
 import androidx.compose.material.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -16,6 +27,7 @@ import com.example.mobilki.presentation.base.BaseScreen
 import com.example.mobilki.presentation.components.PasswordInput
 import com.example.mobilki.presentation.components.PhoneInput
 import com.example.mobilki.presentation.dim.Dimens
+import com.example.mobilki.presentation.nav.NavRoutes
 import com.example.mobilki.ui.theme.typography
 
 @Composable
@@ -29,7 +41,8 @@ fun LoginScreen(
 
     LaunchedEffect(key1 = state.successful) {
         if (state.successful) {
-            navController.navigate("greetings/${state.userId}")
+            navController.navigate(NavRoutes.GREETINGS.withArg(state.userId))
+            viewModel.navigatedToGreetingsScreen()
         }
     }
 
