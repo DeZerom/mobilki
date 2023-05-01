@@ -48,9 +48,18 @@ class UserRepository @Inject constructor(
 
         val writeTime = sharedPreferences.getLong(TIME_KEY, 0)
 
-        if (writeTime + EXPIRE_TIME <= System.currentTimeMillis()) return null
+        if (writeTime + EXPIRE_TIME <= System.currentTimeMillis()) {
+            forgotUser()
+            return null
+        }
 
         return userDao.getUserByPhoneAndPass(code, number, pass)
+    }
+
+    fun saveLastActiveTime() {
+        sharedPreferences.edit()
+            .putLong(TIME_KEY, System.currentTimeMillis())
+            .apply()
     }
 
     companion object {

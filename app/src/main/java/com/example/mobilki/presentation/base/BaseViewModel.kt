@@ -1,18 +1,17 @@
 package com.example.mobilki.presentation.base
 
 import androidx.annotation.StringRes
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.receiveAsFlow
 
 open class BaseViewModel: ViewModel() {
 
-    private val _toastRes = Channel<Int>()
-    val toastRes = _toastRes.receiveAsFlow()
+    private val _toastRes = mutableStateOf<Int?>(null)
+    val toastRes: State<Int?> = _toastRes
 
-    suspend fun setToastText(@StringRes res: Int) {
-        _toastRes.send(0)
-        _toastRes.send(res)
+    fun setToastText(@StringRes res: Int) {
+        _toastRes.value = res
     }
 
 }

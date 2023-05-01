@@ -34,6 +34,10 @@ class LoginScreenViewModel @Inject constructor(
         _state.value = state.value.copy(pass = newPass)
     }
 
+    fun onRememberMeChanged(isRememberMe: Boolean) {
+        _state.value = state.value.copy(rememberMe = isRememberMe)
+    }
+
     fun logIn() = viewModelScope.launch {
         _state.value = state.value.copy(isLoading = true)
 
@@ -73,15 +77,16 @@ class LoginScreenViewModel @Inject constructor(
     private suspend fun tryRestoreCredentials() {
         val userModel = userRepository.restoreCredentials()
 
-        val newsState = if (userModel == null) {
+        val newState = if (userModel == null) {
             LoginScreenState()
         } else {
             state.value.copy(
-                successful = true
+                successful = true,
+                userId = userModel.id
             )
         }
 
-        _state.value = newsState
+        _state.value = newState
     }
 
     private fun navigateToGreetingsScreen(userId: Int) {

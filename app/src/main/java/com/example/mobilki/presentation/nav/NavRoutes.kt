@@ -13,7 +13,7 @@ enum class NavRoutes(
     );
 
     fun rawRoute(): String {
-        return if (route.isNotBlank())
+        return if (argName.isNotBlank())
             "$route/{$argName}"
         else
             route

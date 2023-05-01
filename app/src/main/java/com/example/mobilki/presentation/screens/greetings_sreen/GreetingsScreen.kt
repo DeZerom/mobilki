@@ -33,10 +33,12 @@ fun GreetingsScreen(
     BaseScreen(baseViewModel = viewModel)
 
     LaunchedEffect(key1 = state.isLoggedOut) {
-        navController.popBackStack(
-            route = NavRoutes.AUTH_PAGER.rawRoute(),
-            inclusive = false
-        )
+        if (state.isLoggedOut) {
+            navController.popBackStack(
+                route = NavRoutes.AUTH_PAGER.rawRoute(),
+                inclusive = false
+            )
+        }
     }
 
     Column(

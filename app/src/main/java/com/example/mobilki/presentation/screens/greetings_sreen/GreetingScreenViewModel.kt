@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.mobilki.R
 import com.example.mobilki.data.repository.UserRepository
 import com.example.mobilki.presentation.base.BaseViewModel
+import com.example.mobilki.presentation.nav.NavRoutes
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -17,7 +18,7 @@ class GreetingScreenViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle
 ): BaseViewModel() {
 
-    private val userId: Int = savedStateHandle["id"] ?: 0
+    private val userId: Int = savedStateHandle[NavRoutes.GREETINGS.argName] ?: 0
 
     private val _state = MutableStateFlow(GreetingsScreenState(null))
     val state = _state.asStateFlow()

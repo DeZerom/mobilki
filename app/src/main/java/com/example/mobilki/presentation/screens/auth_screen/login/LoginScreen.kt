@@ -13,9 +13,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -72,13 +69,12 @@ fun LoginScreen(
             )
         }
         
-        var isRememberMe by remember { mutableStateOf(false) }
         Row(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(Dimens.Paddings.halfPadding),
             modifier = Modifier.fillMaxWidth()
         ) {
-            Checkbox(checked = isRememberMe, onCheckedChange = { isRememberMe = !isRememberMe })
+            Checkbox(checked = state.rememberMe, onCheckedChange = viewModel::onRememberMeChanged)
             
             Text(
                 text = stringResource(id = R.string.rememberMe),
