@@ -68,7 +68,7 @@ class UserRepository @Inject constructor(
         private const val PASS_KEY = "pass"
         private const val TIME_KEY = "time"
         private const val MILLIS_IN_MINUTE = 1000 * 60
-        private const val EXPIRE_TIME = 2 * MILLIS_IN_MINUTE
+        private const val EXPIRE_TIME = 60 * MILLIS_IN_MINUTE
     }
 
 }

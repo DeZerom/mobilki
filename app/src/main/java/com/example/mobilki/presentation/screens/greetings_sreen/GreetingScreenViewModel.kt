@@ -32,22 +32,20 @@ class GreetingScreenViewModel @Inject constructor(
     fun changeUserData() = viewModelScope.launch {
         state.value.user?.let { userRepository.updateUserData(it) }
         _state.value = state.value.copy(user = userRepository.getUserById(userId))
+
+        logout()
     }
 
     fun onNameChanged(newName: String) {
         _state.value = state.value.copy(
             user = state.value.user?.copy(name = newName)
         )
-
-        logout()
     }
 
     fun onPassChanged(newPass: String) {
         _state.value = state.value.copy(
             user = state.value.user?.copy(pass = newPass)
         )
-
-        logout()
     }
 
     private fun logout() {
