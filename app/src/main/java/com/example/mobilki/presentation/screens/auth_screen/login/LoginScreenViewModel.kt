@@ -2,6 +2,7 @@ package com.example.mobilki.presentation.screens.auth_screen.login
 
 import androidx.lifecycle.viewModelScope
 import com.example.mobilki.R
+import com.example.mobilki.data.repository.SessionRepository
 import com.example.mobilki.data.repository.UserRepository
 import com.example.mobilki.presentation.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -12,7 +13,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginScreenViewModel @Inject constructor(
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
+    private val sessionRepository: SessionRepository
 ): BaseViewModel() {
 
     private val _state = MutableStateFlow(LoginScreenState())
@@ -50,9 +52,7 @@ class LoginScreenViewModel @Inject constructor(
         )
 
         if (result != null) {
-            if (state.rememberMe) {
-                rememberUser(state)
-            }
+            rememberUser(if (state.rememberMe) state else null)
 
             _state.value = LoginScreenState()
             navigateToGreetingsScreen(result)
@@ -66,16 +66,26 @@ class LoginScreenViewModel @Inject constructor(
         _state.value = state.value.copy(successful = false)
     }
 
-    private fun rememberUser(state: LoginScreenState) {
-        userRepository.rememberUser(
-            code = state.code,
-            phone = state.phone,
-            pass = state.pass
+    private fun rememberUser(state: LoginScreenState?) {
+        sessionRepository.startSession(
+            phoneCode = state?.code,
+            phoneNumber = state?.phone,
+            pass = state?.pass
         )
     }
 
     private suspend fun tryRestoreCredentials() {
-        val userModel = userRepository.restoreCredentials()
+        val userModel = if (sessionRepository.isSessionActive()) {
+            val userSavedData = sessionRepository.getUserSavedData()
+
+            userRepository.getUserByPhoneAndPass(
+                code = userSavedData.phoneCode,
+                phone = userSavedData.phoneNumber,
+                pass = userSavedData.pass
+            )
+        } else {
+            null
+        }
 
         val newState = if (userModel == null) {
             LoginScreenState()
