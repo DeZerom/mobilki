@@ -28,4 +28,8 @@ class UserRepository @Inject constructor(
         return userDao.getUserByPhoneAndPass(code, phone, pass)
     }
 
+    suspend fun getAllUsers(): List<UserModel> {
+        return userDao.getAllUsers() ?: emptyList()
+    }
+
 }

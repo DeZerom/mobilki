@@ -3,6 +3,7 @@ package com.example.mobilki.presentation.screens.greetings_sreen
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.example.mobilki.R
+import com.example.mobilki.data.models.UserModel
 import com.example.mobilki.data.repository.SessionRepository
 import com.example.mobilki.data.repository.UserRepository
 import com.example.mobilki.presentation.base.BaseViewModel
@@ -29,6 +30,21 @@ class GreetingScreenViewModel @Inject constructor(
         viewModelScope.launch {
             getUser()
         }
+    }
+
+    fun onIsAdminChange(user: UserModel, isAdmin: Boolean) = viewModelScope.launch {
+        val changedUser = user.copy(isAdmin = isAdmin)
+
+        _state.value = state.value.copy(
+            usersList = state.value.usersList.map {
+                if (it.id == user.id)
+                    changedUser
+                else
+                    it
+            }
+        )
+
+        userRepository.updateUserData(changedUser)
     }
 
     fun changeUserData() = viewModelScope.launch {
@@ -60,6 +76,12 @@ class GreetingScreenViewModel @Inject constructor(
 
         if (user != null) {
             _state.value = state.value.copy(user = user)
+
+            if (user.isAdmin) {
+                val users = userRepository.getAllUsers().filter { it.id != userId }
+
+                _state.value = state.value.copy(usersList = users)
+            }
         } else {
             setToastText(R.string.something_went_wrong)
         }
