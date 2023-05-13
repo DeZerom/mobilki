@@ -10,6 +10,8 @@ import androidx.compose.material.Surface
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInteropFilter
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -20,28 +22,34 @@ import com.example.mobilki.presentation.screens.auth_screen.AuthPagerScreen
 import com.example.mobilki.presentation.screens.greetings_sreen.GreetingsScreen
 import com.example.mobilki.ui.theme.MobilkiTheme
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     private val viewModel: MainActivityViewModel by viewModels()
+
+    private var _navController: NavHostController? = null
+    private val navController get() = _navController!!
 
     @OptIn(ExperimentalComposeUiApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             MobilkiTheme {
+                _navController = rememberNavController()
+
                 Surface(
                     color = MaterialTheme.colors.background,
                     modifier = Modifier
                         .fillMaxSize()
                         .pointerInteropFilter {
-                            viewModel.writeLastActiveTime()
+
+                            viewModel.processTouchEvent()
 
                             false
                         }
                 ) {
-                    val navController = rememberNavController()
-
                     NavHost(
                         navController = navController,
                         startDestination = NavRoutes.AUTH_PAGER.rawRoute()) {
@@ -58,11 +66,23 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+
+        lifecycleScope.launch {
+            viewModel.sideEffects.collectLatest { handleSideEffect(it) }
+        }
     }
 
     override fun onPause() {
-        viewModel.writeLastActiveTime()
+        viewModel.writeLastActiveTimeIfPossible()
 
         super.onPause()
+    }
+
+    private fun handleSideEffect(sideEffect: MainActivitySideEffect) {
+        when (sideEffect) {
+            MainActivitySideEffect.GoToLoginScreen -> {
+                navController.popBackStack(NavRoutes.AUTH_PAGER.rawRoute(), false)
+            }
+        }
     }
 }
