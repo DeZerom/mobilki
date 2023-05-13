@@ -44,7 +44,6 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier
                         .fillMaxSize()
                         .pointerInteropFilter {
-
                             viewModel.processTouchEvent()
 
                             false
