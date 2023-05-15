@@ -20,6 +20,7 @@ import androidx.navigation.navArgument
 import com.example.mobilki.presentation.nav.NavRoutes
 import com.example.mobilki.presentation.screens.auth_screen.AuthPagerScreen
 import com.example.mobilki.presentation.screens.greetings_sreen.GreetingsScreen
+import com.example.mobilki.presentation.screens.weather.WeatherScreen
 import com.example.mobilki.ui.theme.MobilkiTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -55,12 +56,17 @@ class MainActivity : ComponentActivity() {
                         composable(NavRoutes.AUTH_PAGER.rawRoute()) {
                             AuthPagerScreen(navController)
                         }
+
                         composable(
                             route = NavRoutes.GREETINGS.rawRoute(),
                             arguments = listOf(
                                 navArgument(NavRoutes.GREETINGS.argName) { type = NavType.IntType }
                             )
                         ) { GreetingsScreen(navController) }
+
+                        composable(route = NavRoutes.WEATHER.rawRoute()) {
+                            WeatherScreen()
+                        }
                     }
                 }
             }

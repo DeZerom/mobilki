@@ -33,6 +33,13 @@ fun GreetingsScreen(
 
     BaseScreen(baseViewModel = viewModel)
 
+    LaunchedEffect(key1 = state.navigateToWeather) {
+        if (state.navigateToWeather) {
+            navController.navigate(NavRoutes.WEATHER.rawRoute())
+            viewModel.navigatedToWeather()
+        }
+    }
+
     LaunchedEffect(key1 = state.isLoggedOut) {
         if (state.isLoggedOut) {
             navController.popBackStack(
@@ -106,6 +113,17 @@ fun GreetingsScreen(
                             user = state.usersList[it],
                             onCheckedChange = viewModel::onIsAdminChange)
                     }
+                }
+            } else {
+                Button(
+                    modifier = Modifier.fillMaxWidth(),
+                    onClick = viewModel::onWeatherButtonClicked
+                ) {
+                    Text(
+                        text = stringResource(id = R.string.to_weather),
+                        style = typography.body1,
+                        color = Color.White
+                    )
                 }
             }
         }

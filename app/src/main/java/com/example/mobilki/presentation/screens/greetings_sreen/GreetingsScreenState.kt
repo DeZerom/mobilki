@@ -5,5 +5,6 @@ import com.example.mobilki.data.models.UserModel
 data class GreetingsScreenState(
     val user: UserModel? = null,
     val isLoggedOut: Boolean = false,
-    val usersList: List<UserModel> = emptyList()
+    val usersList: List<UserModel> = emptyList(),
+    val navigateToWeather: Boolean = false
 )

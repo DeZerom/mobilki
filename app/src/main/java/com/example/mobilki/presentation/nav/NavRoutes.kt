@@ -10,6 +10,9 @@ enum class NavRoutes(
     GREETINGS(
         route = "greetings",
         argName = "userId"
+    ),
+    WEATHER(
+        route = "weather"
     );
 
     fun rawRoute(): String {

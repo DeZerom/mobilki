@@ -28,4 +28,5 @@
     <string name="change">Изменить</string>
     <string name="admin">Админ</string>
     <string name="user">Пользователь</string>
+    <string name="to_weather">К погоде</string>
 </resources>

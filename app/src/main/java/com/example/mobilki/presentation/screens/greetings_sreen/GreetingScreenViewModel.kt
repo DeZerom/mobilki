@@ -32,6 +32,14 @@ class GreetingScreenViewModel @Inject constructor(
         }
     }
 
+    fun navigatedToWeather() {
+        _state.value = state.value.copy(navigateToWeather = false)
+    }
+
+    fun onWeatherButtonClicked() {
+        _state.value = state.value.copy(navigateToWeather = true)
+    }
+
     fun onIsAdminChange(user: UserModel, isAdmin: Boolean) = viewModelScope.launch {
         val changedUser = user.copy(isAdmin = isAdmin)
 
