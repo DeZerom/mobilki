@@ -2,18 +2,21 @@ package com.example.mobilki.presentation.screens.weather
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.mobilki.R
+import com.example.mobilki.domain.models.weather.CurrentWeatherDomainModel
+import com.example.mobilki.presentation.base.BaseScreen
 import com.example.mobilki.presentation.dim.Dimens
 import com.example.mobilki.ui.theme.typography
 
@@ -21,16 +24,28 @@ import com.example.mobilki.ui.theme.typography
 fun WeatherScreen(
     viewModel: WeatherScreenViewModel = hiltViewModel()
 ) {
+    val state by viewModel.state.collectAsState()
+
+    BaseScreen(baseViewModel = viewModel)
 
     Column(
         verticalArrangement = Arrangement.spacedBy(Dimens.Paddings.basePadding),
         modifier = Modifier
-            .fillMaxWidth()
+            .fillMaxSize()
             .padding(all = Dimens.Paddings.basePadding)
     ) {
-        SearchRow(onSearch = viewModel::onSearch, onGeoPos = viewModel::onGeoPos)
+        if (state.isLoading) {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                CircularProgressIndicator()
+            }
+        } else {
+            SearchRow(onSearch = viewModel::onSearch, onGeoPos = viewModel::onGeoPos)
 
-        ResultInfo()
+            ResultInfo(state.weatherInfo)
+        }
     }
 }
 
@@ -84,4 +99,26 @@ private fun SearchRow(
 }
 
 @Composable
-private fun ResultInfo() {}
+private fun ResultInfo(weatherInfo: CurrentWeatherDomainModel?) {
+    if (weatherInfo == null) return
+
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(Dimens.Paddings.halfPadding)
+    ) {
+        Text(
+            text = stringResource(
+                id = R.string.city_country,
+                formatArgs = arrayOf(weatherInfo.cityName, weatherInfo.countryCode)
+            ),
+            style = typography.h2
+        )
+
+        Text(text = weatherInfo.weatherName, style = typography.body1)
+        Text(text = weatherInfo.weatherDescription, style = typography.body2)
+
+        Text(text = weatherInfo.temp.toString())
+        Text(text = weatherInfo.pressure.toString())
+    }
+}

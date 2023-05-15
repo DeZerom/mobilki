@@ -1,14 +1,36 @@
 package com.example.mobilki.presentation.screens.weather
 
+import androidx.lifecycle.viewModelScope
+import com.example.mobilki.R
+import com.example.mobilki.data.repository.WeatherRepository
 import com.example.mobilki.presentation.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class WeatherScreenViewModel @Inject constructor(): BaseViewModel() {
+class WeatherScreenViewModel @Inject constructor(
+    private val weatherRepository: WeatherRepository
+): BaseViewModel() {
 
-    fun onSearch(searchString: String) {}
+    private val _state = MutableStateFlow(WeatherScreenState())
+    val state = _state.asStateFlow()
 
-    fun onGeoPos() {}
+    fun onSearch(searchString: String) = viewModelScope.launch {
+        _state.value = state.value.copy(isLoading = true)
+
+        val result = weatherRepository.getWeatherAtCity(searchString)
+
+        if (result == null)
+            setToastText(R.string.something_went_wrong)
+
+        _state.value = state.value.copy(weatherInfo = result, isLoading = false)
+    }
+
+    fun onGeoPos() {
+        setToastText(R.string.something_went_wrong) //todo
+    }
 
 }

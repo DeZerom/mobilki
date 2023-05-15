@@ -29,4 +29,7 @@
     <string name="admin">Админ</string>
     <string name="user">Пользователь</string>
     <string name="to_weather">К погоде</string>
+
+    <!-- weather -->
+    <string name="city_country">%1s (%2s)</string>
 </resources>
