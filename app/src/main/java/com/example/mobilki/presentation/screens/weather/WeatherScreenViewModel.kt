@@ -7,4 +7,8 @@ import javax.inject.Inject
 @HiltViewModel
 class WeatherScreenViewModel @Inject constructor(): BaseViewModel() {
 
+    fun onSearch(searchString: String) {}
+
+    fun onGeoPos() {}
+
 }
