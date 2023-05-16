@@ -32,4 +32,6 @@
 
     <!-- weather -->
     <string name="city_country">%1s (%2s)</string>
+    <string name="temperature">%.2f °C</string>
+    <string name="pressure">%.2f мм.рт.ст.</string>
 </resources>

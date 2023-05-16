@@ -14,5 +14,7 @@ object Dimens {
         val boldDividerThickness = 3.dp
 
         val countryCodeFieldWidth = 60.dp
+
+        val weatherIconSize = 100.dp
     }
 }

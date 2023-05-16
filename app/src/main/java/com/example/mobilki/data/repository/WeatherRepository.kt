@@ -40,7 +40,7 @@ class WeatherRepository @Inject constructor(
                 CurrentWeatherDomainModel(
                     weatherName = weather?.main ?: "",
                     weatherDescription = weather?.description ?: "",
-                    weatherIcon = weather?.icon ?: "",
+                    weatherIcon = weather?.icon?.let { "$ICON_URL_PREFIX$it$PNG_POSTFIX" } ?: "",
                     temp = weatherInfo?.main?.temp ?: .0,
                     pressure = weatherInfo?.main?.pressure ?: .0,
                     cityName = cityInfo.localNames?.ruName ?: "",
@@ -50,6 +50,11 @@ class WeatherRepository @Inject constructor(
                 null
             }
         }
+    }
+
+    companion object {
+        private const val ICON_URL_PREFIX = "https://openweathermap.org/img/w/"
+        private const val PNG_POSTFIX = ".png"
     }
 
 }
