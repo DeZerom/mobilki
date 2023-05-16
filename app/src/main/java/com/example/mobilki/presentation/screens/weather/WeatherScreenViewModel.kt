@@ -1,5 +1,6 @@
 package com.example.mobilki.presentation.screens.weather
 
+import android.location.LocationManager
 import androidx.lifecycle.viewModelScope
 import com.example.mobilki.R
 import com.example.mobilki.data.repository.WeatherRepository
@@ -12,7 +13,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class WeatherScreenViewModel @Inject constructor(
-    private val weatherRepository: WeatherRepository
+    private val weatherRepository: WeatherRepository,
+    private val locationManager: LocationManager
 ): BaseViewModel() {
 
     private val _state = MutableStateFlow(WeatherScreenState())
@@ -30,7 +32,7 @@ class WeatherScreenViewModel @Inject constructor(
     }
 
     fun onGeoPos() {
-        setToastText(R.string.something_went_wrong) //todo
+
     }
 
 }
