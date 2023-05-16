@@ -1,13 +1,18 @@
 package com.example.mobilki.presentation.screens.weather
 
+import android.location.Location
+import android.location.LocationListener
 import android.location.LocationManager
 import androidx.lifecycle.viewModelScope
 import com.example.mobilki.R
 import com.example.mobilki.data.repository.WeatherRepository
+import com.example.mobilki.domain.models.weather.CurrentWeatherDomainModel
 import com.example.mobilki.presentation.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -20,6 +25,9 @@ class WeatherScreenViewModel @Inject constructor(
     private val _state = MutableStateFlow(WeatherScreenState())
     val state = _state.asStateFlow()
 
+    private val _sideEffect = Channel<WeatherScreenSideEffect>()
+    val sideEffect = _sideEffect.receiveAsFlow()
+
     fun onSearch(searchString: String) = viewModelScope.launch {
         _state.value = state.value.copy(isLoading = true)
 
@@ -31,8 +39,50 @@ class WeatherScreenViewModel @Inject constructor(
         _state.value = state.value.copy(weatherInfo = result, isLoading = false)
     }
 
-    fun onGeoPos() {
+    fun onGeoPos() = viewModelScope.launch {
+        try {
+            locationManager.requestLocationUpdates(
+                LocationManager.GPS_PROVIDER,
+                10000,
+                0f,
+                gpsLocationListener
+            )
+        } catch (e: SecurityException) {
+            _sideEffect.send(WeatherScreenSideEffect.RequestGpsPermission)
+            return@launch
+        }
 
+        _state.value = state.value.copy(isLoading = true)
+
+        val result = getResultByCurrentPosition()
+
+        _state.value = state.value.copy(weatherInfo = result, isLoading = false)
     }
 
+    private suspend fun getResultByCurrentPosition(): CurrentWeatherDomainModel? {
+        val location = gpsLocationListener.cachedLocation ?: return null
+
+        return weatherRepository.getWeatherAtLocation(
+            lat = location.latitude,
+            lon = location.longitude
+        )
+    }
+
+
+    private val gpsLocationListener = object : LocationListener {
+        var cachedLocation: Location? = try {
+            locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
+        } catch (e: SecurityException) {
+            null
+        }
+            private set
+
+        override fun onLocationChanged(location: Location) {
+            cachedLocation = location
+        }
+    }
+
+    companion object {
+        private const val TAG = "WeatherScreenViewModel"
+    }
 }
