@@ -20,6 +20,7 @@ import androidx.navigation.navArgument
 import com.example.mobilki.presentation.nav.NavRoutes
 import com.example.mobilki.presentation.screens.auth_screen.AuthPagerScreen
 import com.example.mobilki.presentation.screens.greetings_sreen.GreetingsScreen
+import com.example.mobilki.presentation.screens.hours_forecast.HoursForecastScreen
 import com.example.mobilki.presentation.screens.weather.WeatherScreen
 import com.example.mobilki.ui.theme.MobilkiTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -65,7 +66,18 @@ class MainActivity : ComponentActivity() {
                         ) { GreetingsScreen(navController) }
 
                         composable(route = NavRoutes.WEATHER.rawRoute()) {
-                            WeatherScreen()
+                            WeatherScreen(navController)
+                        }
+
+                        composable(
+                            route = NavRoutes.HOURS_FORECAST.rawRoute(),
+                            arguments = listOf(
+                                navArgument(NavRoutes.HOURS_FORECAST.argName) {
+                                    type = NavType.FloatArrayType
+                                }
+                            )
+                        ) {
+                            HoursForecastScreen()
                         }
                     }
                 }

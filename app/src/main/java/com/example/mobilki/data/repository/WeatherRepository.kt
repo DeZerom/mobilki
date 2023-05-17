@@ -44,7 +44,9 @@ class WeatherRepository @Inject constructor(
                     temp = weatherInfo?.main?.temp ?: .0,
                     pressure = weatherInfo?.main?.pressure ?: .0,
                     cityName = cityInfo.localNames?.ruName ?: "",
-                    countryCode = cityInfo.country ?: ""
+                    countryCode = cityInfo.country ?: "",
+                    lat = cityInfo.lat,
+                    lon = cityInfo.lon
                 )
             } else {
                 null

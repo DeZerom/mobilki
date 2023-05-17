@@ -3,6 +3,7 @@ package com.example.mobilki.presentation.screens.weather
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.example.mobilki.R
 import com.example.mobilki.data.repository.WeatherRepository
@@ -27,6 +28,23 @@ class WeatherScreenViewModel @Inject constructor(
 
     private val _sideEffect = Channel<WeatherScreenSideEffect>()
     val sideEffect = _sideEffect.receiveAsFlow()
+
+    override fun onCleared() {
+        locationManager.removeUpdates(gpsLocationListener)
+
+        super.onCleared()
+    }
+
+    fun toHoursForecastButtonClicked() = viewModelScope.launch {
+        val weatherInfo = state.value.weatherInfo ?: return@launch
+
+        _sideEffect.send(
+            WeatherScreenSideEffect.GoToHoursForecast(
+                lat = weatherInfo.lat.toFloat(),
+                lon = weatherInfo.lon.toFloat()
+            )
+        )
+    }
 
     fun onSearch(searchString: String) = viewModelScope.launch {
         _state.value = state.value.copy(isLoading = true)
@@ -60,7 +78,10 @@ class WeatherScreenViewModel @Inject constructor(
     }
 
     private suspend fun getResultByCurrentPosition(): CurrentWeatherDomainModel? {
-        val location = gpsLocationListener.cachedLocation ?: return null
+        val location = gpsLocationListener.cachedLocation ?: run {
+            Log.e(TAG, "Null location")
+            return null
+        }
 
         return weatherRepository.getWeatherAtLocation(
             lat = location.latitude,
@@ -70,12 +91,7 @@ class WeatherScreenViewModel @Inject constructor(
 
 
     private val gpsLocationListener = object : LocationListener {
-        var cachedLocation: Location? = try {
-            locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
-        } catch (e: SecurityException) {
-            null
-        }
-            private set
+        var cachedLocation: Location? = null
 
         override fun onLocationChanged(location: Location) {
             cachedLocation = location
