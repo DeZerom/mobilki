@@ -14,7 +14,7 @@ enum class NavRoutes(
     WEATHER(
         route = "weather"
     ),
-    HOURS_FORECAST(
+    HOURLY_FORECAST(
         route = "hours",
         argName = "location"
     );
@@ -30,7 +30,7 @@ enum class NavRoutes(
         return "$route/$arg"
     }
 
-    fun withArg(arg: Array<Float>): String {
+    fun withArg(arg: String): String {
         return "$route/$arg"
     }
 }

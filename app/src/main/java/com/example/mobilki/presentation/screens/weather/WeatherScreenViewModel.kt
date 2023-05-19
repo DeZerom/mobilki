@@ -40,8 +40,8 @@ class WeatherScreenViewModel @Inject constructor(
 
         _sideEffect.send(
             WeatherScreenSideEffect.GoToHoursForecast(
-                lat = weatherInfo.lat.toFloat(),
-                lon = weatherInfo.lon.toFloat()
+                lat = weatherInfo.lat,
+                lon = weatherInfo.lon
             )
         )
     }

@@ -16,5 +16,6 @@ object Dimens {
         val countryCodeFieldWidth = 60.dp
 
         val weatherIconSize = 100.dp
+        val smallWeatherIconSize = 24.dp
     }
 }

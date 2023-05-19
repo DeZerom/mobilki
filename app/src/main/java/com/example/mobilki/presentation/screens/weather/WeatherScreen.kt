@@ -19,6 +19,7 @@ import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -50,11 +51,14 @@ fun WeatherScreen(
     val context = LocalContext.current
     val state by viewModel.state.collectAsState()
     val sideEffect by viewModel.sideEffect.collectAsState(initial = null)
+
     val launcher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestPermission())
     { isGranted ->
         if (!isGranted) {
-            Toast.makeText(context, R.string.no_gps_permission, Toast.LENGTH_SHORT).show()
+            Toast
+                .makeText(context, R.string.no_gps_permission, Toast.LENGTH_SHORT)
+                .show()
         }
     }
 
@@ -64,9 +68,11 @@ fun WeatherScreen(
         }
 
         is WeatherScreenSideEffect.GoToHoursForecast -> {
-            navController.navigate(
-                NavRoutes.HOURS_FORECAST.withArg(arrayOf(se.lat, se.lon))
-            )
+            LaunchedEffect(key1 = Unit) {
+                navController.navigate(
+                    NavRoutes.HOURLY_FORECAST.withArg("${se.lat};${se.lon}")
+                )
+            }
         }
 
         null -> {}

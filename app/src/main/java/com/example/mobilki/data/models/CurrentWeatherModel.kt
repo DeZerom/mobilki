@@ -15,6 +15,10 @@ data class CurrentWeatherModel(
 
     @Expose
     @SerializedName("dt")
-    val date: Long? = null
+    val date: Long? = null,
+
+    @Expose
+    @SerializedName("dt_txt")
+    val dateText: String? = null
 
 )

@@ -69,6 +69,7 @@ class WeatherRepository @Inject constructor(
             temp = main?.temp ?: .0,
             pressure = main?.pressure ?: .0,
             date = Date(date ?: 0L),
+            dateText = dateText ?: "",
             cityName = cityModel?.localNames?.ruName ?: "",
             countryCode = cityModel?.country ?: "",
             lat = cityModel?.lat ?: .0,

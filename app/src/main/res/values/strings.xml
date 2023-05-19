@@ -36,4 +36,5 @@
     <string name="pressure">%.2f мм.рт.ст.</string>
     <string name="no_gps_permission">Нет доступа к геолокации. Невозможно найти погоду</string>
     <string name="to_hours_forecast">К почасовому прогнозу</string>
+    <string name="forecast_is_empty">Дождя не будет, прогноз не определен</string>
 </resources>

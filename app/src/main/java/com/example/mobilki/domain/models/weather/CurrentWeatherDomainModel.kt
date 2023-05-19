@@ -9,6 +9,7 @@ data class CurrentWeatherDomainModel(
     val temp: Double,
     val pressure: Double,
     val date: Date,
+    val dateText: String,
     val cityName: String,
     val countryCode: String,
     val lat: Double,

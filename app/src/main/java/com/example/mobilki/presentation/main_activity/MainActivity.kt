@@ -70,10 +70,10 @@ class MainActivity : ComponentActivity() {
                         }
 
                         composable(
-                            route = NavRoutes.HOURS_FORECAST.rawRoute(),
+                            route = NavRoutes.HOURLY_FORECAST.rawRoute(),
                             arguments = listOf(
-                                navArgument(NavRoutes.HOURS_FORECAST.argName) {
-                                    type = NavType.FloatArrayType
+                                navArgument(NavRoutes.HOURLY_FORECAST.argName) {
+                                    type = NavType.StringType
                                 }
                             )
                         ) {
