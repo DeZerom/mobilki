@@ -7,10 +7,14 @@ data class CurrentWeatherModel(
 
     @Expose
     @SerializedName("weather")
-    val weather: List<WeatherModel>,
+    val weather: List<WeatherModel> = emptyList(),
 
     @Expose
     @SerializedName("main")
-    val main: MainInfoModel
+    val main: MainInfoModel? = null,
+
+    @Expose
+    @SerializedName("dt")
+    val date: Long? = null
 
 )
